@@ -142,12 +142,15 @@ module.onSnapActivity = () => {
     logInfo("Message constructor " + callback.thisObject)
   })
 
-  hooker.hook(
+  val hookerUnhook = hooker.hook(
     hooker.findMethod("com.snapchat.client.network_api.NetworkApi$CppProxy", "submit"), 
     "before", 
     (callback) => {
       logInfo("NetworkApi submit " + callback.arg(0))
     }
   )
+
+  // unhook when needed using this call
+  hookerUnhook();
 }
 ```
