@@ -9,8 +9,21 @@
 // ==/SE_module==
 ```
 
-## Logger
-- **logInfo**(*messages*: StringArray)
+## Global scope
+- **logInfo** (*messages*: ObjectArray)
+```js
+logInfo("hello", 14, false)
+```
+- **type** (className: String) gives an interface for static method calls, static fields and instantiation
+```js
+var logObject = type("android.util.Log").newInstance()
+logInfo(logObject) // prints "android.util.Log@000000"
+type("java.lang.System").out.println("Hello!") // prints "Hello!"
+```
+- **findClass** (className: String) returns a java.lang.Class for a given class name
+```js
+logInfo(findClass("java.lang.System")) // prints "class java.lang.System"
+```
 
 
 ## Execution sides
