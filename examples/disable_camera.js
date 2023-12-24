@@ -23,10 +23,10 @@ module.onSnapMainActivityCreate = activity => {
     var getCameraDisabledMethod = hooker.findMethodWithParameters("android.app.admin.DevicePolicyManager", "getCameraDisabled", ["android.content.ComponentName"])
     
     hooker.hook(getCameraDisabledMethod, hooker.stage.BEFORE, param => {
-        if (!config.getBoolean("disableCamera", false)) {
-            return
+        var shouldDisableCamera = config.getBoolean("disableCamera") == true
+        logInfo("getCameraDisabled called! shouldDisableCamera=" + shouldDisableCamera)
+        if (shouldDisableCamera) {
+            param.result = true
         }
-        logInfo("getCameraDisabled called!")
-        param.result = true
     })
 }
