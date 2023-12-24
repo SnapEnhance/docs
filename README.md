@@ -41,3 +41,33 @@ hooker.hook(getCameraDisabledMethod, hooker.stage.BEFORE, param => {
 })
 ```
 It does this by hooking `getCameraDisabled` in the `android.app.admin.DevicePolicyManager` class and making Snapchat believe the camera is disabled by always returning true.
+
+### `simple_ipc.js`
+This script is supposed to demonstrate the use of IPC Events.<br>
+It simply emits an IPC Event with specific arguments.<br>
+```js
+module.onSnapMainActivityCreate = activity => {
+    ipc.emit("myEvent", "hello", 255, activity.packageName)
+}
+```
+Which then can get received by other scripts or functions using listeners.
+```js
+module.onSnapEnhanceLoad = context => {
+    ipc.on("myEvent", (args) => {
+        longToast("received event: " + args)
+    })
+}
+```
+
+### `toast.js`
+This script demonstrates the use of Toast messages, these can be useful to debug or transmit information to the user.
+```js
+module.onSnapMainActivityCreate = context => {
+    longToast("Snapchat opened!")
+}
+
+module.onUnload = () => {
+    shortToast("Script unloaded!")
+}
+```
+Please note that in most cases a context is required.
