@@ -1,16 +1,16 @@
-declare interface Class<T> {
+interface Class<T> {
     getName(): string;
 }
 
-declare interface JavaType {
+interface JavaType {
     newInstance(...args: any[]): any;
 }
 
 declare function logInfo(message: any);
 declare function logError(message: any, throwable?: any);
 
-declare function shortToast(...messages: string);
-declare function longToast(...messages: string);
+declare function shortToast(...messages: string[]);
+declare function longToast(...messages: string[]);
 
 declare function type(className: string, useModClassLoader?: boolean): JavaType | undefined;
 declare function findClass(className: string, useModClassLoader?: boolean): Class<any> | undefined;
@@ -26,7 +26,7 @@ declare module "hooker" {
     interface ScriptHookCallback {
         result: any;
         readonly thisObject: any;
-        readonly method: Member;
+        readonly method: any;
         readonly args: any[];
 
         cancel(): void;
@@ -37,17 +37,17 @@ declare module "hooker" {
         toString(): string;
     }
 
-    declare type HookCallback = (scriptHookCallback: ScriptHookCallback) => void;
-    declare type HookUnhook = () => void;
+    type HookCallback = (scriptHookCallback: ScriptHookCallback) => void;
+    type HookUnhook = () => void;
     
-    function findMethod(clazz: Class<any>, methodName: string): Member | undefined;
-    function findMethodWithParameters(clazz: Class<any>, methodName: string, types: string[]): Member | undefined;
-    function findMethod(className: string, methodName: string): Member | undefined;
-    function findMethodWithParameters(className: string, methodName: string, types: string[]): Member | undefined;
-    function findConstructor(clazz: Class<any>, types: string[]): Member | undefined;
-    function findConstructorParameters(className: string, types: string[]): Member | undefined;
+    function findMethod(clazz: Class<any>, methodName: string): any | undefined;
+    function findMethodWithParameters(clazz: Class<any>, methodName: string, types: string[]): any | undefined;
+    function findMethod(className: string, methodName: string): any | undefined;
+    function findMethodWithParameters(className: string, methodName: string, types: string[]): any | undefined;
+    function findConstructor(clazz: Class<any>, types: string[]): any | undefined;
+    function findConstructorParameters(className: string, types: string[]): any | undefined;
 
-    function hook(method: Member, stage: stage, callback: HookCallback): HookUnhook;
+    function hook(method: any, stage: stage, callback: HookCallback): HookUnhook;
     function hookAllMethods(clazz: Class<any>, methodName: string, stage: stage, callback: HookCallback): HookUnhook;
     function hookAllConstructors(clazz: Class<any>, stage: stage, callback: HookCallback): HookUnhook;
     function hookAllMethods(className: string, methodName: string, stage: stage, callback: HookCallback): HookUnhook | undefined;
@@ -109,7 +109,9 @@ declare module "config" {
 }
 
 declare module "interface-manager" {
-    type BuilderCallback = (builder: InterfaceBuilder) => void
+    type interfaces = "settings" | "friendFeedContextMenu"
+
+    type BuilderCallback = (builder: InterfaceBuilder, args: Record<string, any>) => void;
 
     interface Node {
         setAttribute(key: string, value: any | undefined): void
@@ -122,8 +124,8 @@ declare module "interface-manager" {
     }
 
     interface RowColumnNode extends Node {
-        arrangement(arrangement: string): RowColumnNode
-        alignment(alignment: string): RowColumnNode
+        arrangement(arrangement: "start" | "end" | "top" | "bottom" | "center" | "spaceBetween" | "spaceAround" | "spaceEvenly"): RowColumnNode
+        alignment(alignment: "start" | "end" | "top" | "bottom" | "centerVertically" | "centerHorizontally"): RowColumnNode
         spacedBy(spacing: number): RowColumnNode
     }
 
@@ -140,7 +142,7 @@ declare module "interface-manager" {
         list(label: string, items: string[], onClick: ((index: number) => void)): Node;
     }
 
-    function create(name: string, callback: BuilderCallback): void;
+    function create(name: interfaces, callback: BuilderCallback): void;
 }
 
 declare module "ipc" {
@@ -171,7 +173,7 @@ declare namespace module {
         readonly author: string | undefined;
         readonly minSnapchatVersion: number | undefined;
         readonly minSEVersion: number | undefined;
-        readonly permissions: string[];
+        readonly grantedPermissions: string[];
     }
 
     let exports: any | undefined;
