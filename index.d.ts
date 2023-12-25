@@ -171,7 +171,7 @@ declare namespace module {
         readonly author: string | undefined;
         readonly minSnapchatVersion: number | undefined;
         readonly minSEVersion: number | undefined;
-        readonly grantedPermissions: string[];
+        readonly permissions: string[];
     }
 
     let exports: any | undefined;
