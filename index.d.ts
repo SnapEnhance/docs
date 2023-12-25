@@ -12,8 +12,8 @@ declare function logError(message: any, throwable?: any);
 declare function shortToast(...messages: string);
 declare function longToast(...messages: string);
 
-declare function type(className: string): JavaType | undefined;
-declare function findClass(className: string): Class<any> | undefined;
+declare function type(className: string, useModClassLoader?: boolean): JavaType | undefined;
+declare function findClass(className: string, useModClassLoader?: boolean): Class<any> | undefined;
 declare function setField(instance: any, fieldName: string, value: any | undefined): void;
 declare function getField(instance: any, fieldName: string): any | undefined;
 
@@ -153,6 +153,11 @@ declare module "ipc" {
     function emit(eventName: string, ...args: any[]): void;
     function broadcast(channel: string, eventName: string): void;
     function broadcast(channel: string, eventName: string, ...args: any[]): void;
+}
+
+declare module "java-interfaces" {
+    function runnable(callback: (() => void)): any;
+    function newProxy(javaClass: Class<any>, callback: ((proxy: any, method: any, args: any[]) => any)): any;
 }
 
 declare const currentSide: "core" | "manager";
