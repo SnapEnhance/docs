@@ -16,7 +16,7 @@ Every script written for the Scripting Engine must include a header section at t
 // ==/SE_module==
 ```
 The following fields are required: `name`, `version`, `author`<br>
-Additionally, there are also optional fields available which are: `displayName`, `description`, `minSnapchatVersion`, `minSEVersion`, `grantedPermissions`
+Additionally, there are also optional fields available which are: `displayName`, `description`, `minSnapchatVersion`, `minSEVersion`, `permissions`
 
 ### Field Description
 
@@ -27,7 +27,7 @@ Additionally, there are also optional fields available which are: `displayName`,
 `description`: Brief explanation of the script's functionality.<br>
 `minSnapchatVersion`: Minimum required Snapchat version code (e.g., 106822).<br>
 `minSEVersion`: Minimum required SnapEnhance version code (e.g., ).<br>
-`grantedPermissions`: -
+`permissions`: Grant permissions to the script (e.g. unsafe-classloader)
 
 ## Examples
 To start off, you can find a couple of Example scripts written by us [here](https://github.com/SnapEnhance/docs/tree/main/examples).
