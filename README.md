@@ -8,18 +8,20 @@ In case of any questions, feel free to ask via opening an issue or asking on our
 Every script written for the Scripting Engine must include a header section at the beginning of the file. The header follows a specific format, as shown below:
 ```
 // ==SE_module==
-// name: Script Name
+// name: script_name
+// displayName: Script Name
 // description: Script description
 // version: 1.0
 // author: Author
 // ==/SE_module==
 ```
-The following fields are required: `name`, `version`<br>
-Additionally, there are also optional fields available which are: `description`, `author`, `minSnapchatVersion`, `minSEVersion`, `grantedPermissions`
+The following fields are required: `name`, `version`, `author`<br>
+Additionally, there are also optional fields available which are: `displayName`, `description`, `minSnapchatVersion`, `minSEVersion`, `grantedPermissions`
 
 ### Field Description
 
-`name`: Descriptive name for the script.<br>
+`name`: Descriptive name for the script. Must be composed of lowercase letters and underscores only.<br>
+`displayName`: Display name of the script. <br> 
 `author`: Name of the script's creator.<br>
 `version`: Version number of the script (e.g., 1.0).<br>
 `description`: Brief explanation of the script's functionality.<br>
