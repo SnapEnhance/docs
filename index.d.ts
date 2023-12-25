@@ -155,19 +155,23 @@ declare module "ipc" {
     function broadcast(channel: string, eventName: string, ...args: any[]): void;
 }
 
+declare const currentSide: "core" | "manager";
 
 declare namespace module {
     interface ModuleInfo {
-        name: string;
-        version: string;
-        description: string | undefined;
-        author: string | undefined;
-        minSnapchatVersion: number | undefined;
-        minSEVersion: number | undefined;
-        grantedPermissions: string[];
+        readonly name: string;
+        readonly displayName: string;
+        readonly version: string;
+        readonly description: string | undefined;
+        readonly author: string | undefined;
+        readonly minSnapchatVersion: number | undefined;
+        readonly minSEVersion: number | undefined;
+        readonly grantedPermissions: string[];
     }
-    
-    let info: ModuleInfo;
+
+    let exports: any | undefined;
+
+    const info: ModuleInfo;
 
     // SnapEnhance side
     let onSnapEnhanceLoad: ((context: any) => void) | undefined;
