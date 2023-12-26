@@ -111,7 +111,13 @@ declare module "config" {
 declare module "interface-manager" {
     type interfaces = "settings" | "friendFeedContextMenu"
 
+    interface AlertDialog {
+        show(): void;
+        dismiss(): void;
+    }
+
     type BuilderCallback = (builder: InterfaceBuilder, args: Record<string, any>) => void;
+    type AlertDialogCallback = (builder: InterfaceBuilder, alertDialog: AlertDialog) => void;
 
     interface Node {
         setAttribute(key: string, value: any | undefined): void
@@ -143,6 +149,8 @@ declare module "interface-manager" {
     }
 
     function create(name: interfaces, callback: BuilderCallback): void;
+    function createAlertDialog(activity: any, callback: AlertDialogCallback): AlertDialog;
+    function createAlertDialog(activity: any, builder: ((alertDialogBuilder: any) => void), callback: AlertDialogCallback): AlertDialog;
 }
 
 declare module "ipc" {
