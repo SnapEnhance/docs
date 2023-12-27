@@ -109,7 +109,7 @@ declare module "config" {
 }
 
 declare module "interface-manager" {
-    type interfaces = "settings" | "friendFeedContextMenu"
+    type enumUi = "settings" | "friendFeedContextMenu" | "conversationToolbox"
 
     interface AlertDialog {
         show(): void;
@@ -148,7 +148,7 @@ declare module "interface-manager" {
         list(label: string, items: string[], onClick: ((index: number) => void)): Node;
     }
 
-    function create(name: interfaces, callback: BuilderCallback): void;
+    function create(name: enumUi, callback: BuilderCallback): void;
     function createAlertDialog(activity: any, callback: AlertDialogCallback): AlertDialog;
     function createAlertDialog(activity: any, builder: ((alertDialogBuilder: any) => void), callback: AlertDialogCallback): AlertDialog;
 }
