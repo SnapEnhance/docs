@@ -6,6 +6,16 @@ interface JavaType {
     newInstance(...args: any[]): any;
 }
 
+interface SEWrapper {
+    instanceNonNull(): any;
+    isPresent(): boolean;
+    toString(): string;
+
+    getEnumValue(fieldName: string, defaultValue: any): any;
+    setEnumValue(fieldName: string, value: any /* java.lang.Enum */): void;
+}
+
+
 declare function logInfo(message: any);
 declare function logError(message: any, throwable?: any);
 
@@ -168,6 +178,76 @@ declare module "ipc" {
 declare module "java-interfaces" {
     function runnable(callback: (() => void)): any;
     function newProxy(javaClass: Class<any>, callback: ((proxy: any, method: any, args: any[]) => any)): any;
+}
+
+declare module "messaging" {
+    interface SnapUUID extends SEWrapper {
+        toBytes(): any; // byte[]
+        toUUID(): any; // java.util.UUID
+    }
+
+    interface MessageContent extends SEWrapper {
+        content: any; // byte[]
+        contentType: any;
+    }
+
+    interface UserIdToReaction {
+        userId: SnapUUID;
+        reactionId: number;
+    }
+
+    interface MessageMetadata extends SEWrapper {
+        createdAt: number,
+        readAt: number,
+        playableSnapState: any;
+        savedBy: SnapUUID[];
+        openedBy: SnapUUID[];
+        seenBy: SnapUUID[];
+        reactions: UserIdToReaction[];
+        isSaveable: boolean;
+    }
+
+    interface MessageDescriptor extends SEWrapper {
+        messageId: number;
+        conversationId: SnapUUID;
+    }
+
+    interface Message extends SEWrapper {
+        orderKey: number;
+        senderId: SnapUUID;
+        messageContent: MessageContent;
+        messageMetadata: MessageMetadata;
+        messageDescriptor: MessageDescriptor;
+        messageState: any
+
+        serialize(): string?;
+    }
+
+    type ResultCallback = (error?: any) => void;
+    type MessageResultCallback = (error?: any, message?: Message) => void;
+    type MessageListResultCallback = (error?: any, messages: Message[]) => void;
+
+    interface ConversationUserIdPair {
+        readonly conversationId: string;
+        readonly userId: string;
+    }
+
+    type MessageUpdate =  "read" | "release" | "save" | "unsave" | "erase" | "screenshot" | "screen_record" | "replay" | "reaction" | "remove_reaction" | "revoke_transcription" | "allow_transcription" | "erase_saved_story_media";
+
+
+    function isPresent(): boolean;
+    function newSnapUUID(uuid: string): SnapUUID;
+
+    function updateMessage(conversationId: string, messageId: number, action: MessageUpdate, callback: ResultCallback): void;
+    function fetchConversationWithMessagesPaginated(conversationId: string, lastMessageId: number, amount: number, callback: MessageListResultCallback): void;
+    function fetchConversationWithMessages(conversationId: string, callback: MessageListResultCallback): void;
+    function fetchMessageByServerId(conversationId: string, serverId: number, callback: MessageResultCallback): void;
+    function fetchMessagesByServerIds(conversationId: string, serverIds: number[], callback: MessageListResultCallback): void;
+    function displayedMessages(conversationId: string, lastMessageId: number, callback: ResultCallback): void;
+    function fetchMessage(conversationId: string, messageId: number, callback: MessageResultCallback): void;
+    function clearConversation(conversationId: string, callback: ResultCallback): void;
+    function getOneOnOneConversationIds(userIds: string[], callback: (error?: any, result?: ConversationUserIdPair[]) => void): void;
+    function sendChatMessage(conversationId: string, message: string, callback: ResultCallback): void;
 }
 
 declare const currentSide: "core" | "manager";
