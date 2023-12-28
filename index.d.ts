@@ -248,6 +248,22 @@ declare module "messaging" {
     function clearConversation(conversationId: string, callback: ResultCallback): void;
     function getOneOnOneConversationIds(userIds: string[], callback: (error?: any, result?: ConversationUserIdPair[]) => void): void;
     function sendChatMessage(conversationId: string, message: string, callback: ResultCallback): void;
+
+    interface BitmojiInfo extends SEWrapper {
+        avatarId?: string
+        backgroundId?: string
+        sceneId?: string
+        selfieId?: string
+    }
+
+    interface Snapchatter extends SEWrapper {
+        readonly bitmojiInfo?: BitmojiInfo
+        displayName?: string
+        userId: SnapUUID
+        username: string
+    }
+
+    function fetchSnapchatterInfos(userIds: string[]): Snapchatter[];
 }
 
 declare const currentSide: "core" | "manager";
