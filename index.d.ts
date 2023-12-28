@@ -15,6 +15,33 @@ interface SEWrapper {
     setEnumValue(fieldName: string, value: any /* java.lang.Enum */): void;
 }
 
+declare const currentSide: "core" | "manager";
+
+declare namespace module {
+    interface ModuleInfo {
+        readonly name: string;
+        readonly displayName: string;
+        readonly version: string;
+        readonly description: string | undefined;
+        readonly author: string | undefined;
+        readonly minSnapchatVersion: number | undefined;
+        readonly minSEVersion: number | undefined;
+        readonly grantedPermissions: string[];
+    }
+
+    let exports: any | undefined;
+
+    const info: ModuleInfo;
+
+    // SnapEnhance side
+    let onSnapEnhanceLoad: ((context: any) => void) | undefined;
+
+    // Snapchat side
+    let onSnapApplicationLoad: ((context: any) => void) | undefined;
+    let onSnapMainActivityCreate: ((activity: any) => void) | undefined;
+
+    let onUnload: (() => void) | undefined;
+}
 
 declare function logInfo(message: any);
 declare function logError(message: any, throwable?: any);
@@ -266,30 +293,48 @@ declare module "messaging" {
     function fetchSnapchatterInfos(userIds: string[]): Snapchatter[];
 }
 
-declare const currentSide: "core" | "manager";
 
-declare namespace module {
-    interface ModuleInfo {
-        readonly name: string;
-        readonly displayName: string;
-        readonly version: string;
-        readonly description: string | undefined;
-        readonly author: string | undefined;
-        readonly minSnapchatVersion: number | undefined;
-        readonly minSEVersion: number | undefined;
-        readonly grantedPermissions: string[];
+
+declare module "networking" {
+    interface RequestBuilder {
+        url(url: string): RequestBuilder;
+        addHeader(name: string, value: string): RequestBuilder;
+        removeHeader(name: string): RequestBuilder;
+        method(method: "post" | "get" | "put" | "delete" | "patch", body: string | any): RequestBuilder; // byte[] | java.io.InputStream
     }
 
-    let exports: any | undefined;
+    interface Response {
+        readonly statusCode: number;
+        readonly statusMessage: string;
+        readonly headers: Record<string, string>;
+        readonly bodyAsString: string;
+        readonly bodyAsStream: any; // java.io.InputStream
+        readonly bodyAsByteArray: any; // byte[]
+        readonly contentLength: number;
+        getHeader(name: string): string | undefined;
+        close(): void;
+    }
 
-    const info: ModuleInfo;
+    interface Websocket {
+        cancel(): void;
+        close(code: number, reason: string): void;
+        queueSize(): number;
+        send(bytes: any): void; // byte[] | string
+    }
 
-    // SnapEnhance side
-    let onSnapEnhanceLoad: ((context: any) => void) | undefined;
+    interface WebsocketListener {
+        onOpen(websocket: Websocket, response: Response): void;
+        onClosed(websocket: Websocket, code: number, reason: string): void;
+        onClosing(websocket: Websocket, code: number, reason: string): void;
+        onFailure(websocket: Websocket, throwable: any, response: Response | undefined): void;
+        onMessageBytes(websocket: Websocket, bytes: any): void; // byte[]
+        onMessageText(websocket: Websocket, text: string): void;
+    }
 
-    // Snapchat side
-    let onSnapApplicationLoad: ((context: any) => void) | undefined;
-    let onSnapMainActivityCreate: ((activity: any) => void) | undefined;
-
-    let onUnload: (() => void) | undefined;
+    function getUrl(url: string, callback: (error: string | undefined, response: string) => void): void;
+    function getUrlAsStream(url: string, callback: (error: string | undefined, response: any) => void): void; // java.io.InputStream
+    function newRequest(): RequestBuilder;
+    function enqueue(requestBuilder: RequestBuilder, callback: (error: string | undefined, response: Response | undefined) => void): void;
+    function execute(requestBuilder: RequestBuilder): Response;
+    function newWebSocket(requestBuilder: RequestBuilder, listener: WebsocketListener): void;
 }
