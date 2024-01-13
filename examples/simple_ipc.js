@@ -1,7 +1,8 @@
 // ==SE_module==
-// name: IPC Test
+// name: ipc_test
+// description: IPC Test
 // version: 1.0
-// author: John Doe
+// author: SnapEnhance
 // ==/SE_module==
 
 var ipc = require("ipc")
