@@ -1,7 +1,8 @@
 // ==SE_module==
-// name: Camera Disabler
+// name: camera_disabler
+// description: Camera Disabler
 // version: 1.0
-// author: John Doe
+// author: SnapEnhance
 // ==/SE_module==
 
 var hooker = require("hooker")
