@@ -1,5 +1,6 @@
 // ==SE_module==
-// name: Toasts
+// name: toasts
+// displayName: Toasts
 // description: Shows various toast messages
 // version: 1.0
 // author: John Doe
