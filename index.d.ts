@@ -164,12 +164,22 @@ declare module "interface-manager" {
         padding(padding: number): Node
         fontSize(size: number): Node
         color(color: number): Node
+        visibility(visibility: "visible" | "invisible" | "gone"): Node
     }
 
     interface RowColumnNode extends Node {
         arrangement(arrangement: "start" | "end" | "top" | "bottom" | "center" | "spaceBetween" | "spaceAround" | "spaceEvenly"): RowColumnNode
         alignment(alignment: "start" | "end" | "top" | "bottom" | "centerVertically" | "centerHorizontally"): RowColumnNode
         spacedBy(spacing: number): RowColumnNode
+    }
+
+    interface TextInputNode extends Node {
+        value(value: string): TextInputNode
+        placeholder(placeholder: string): TextInputNode
+        callback(callback: ((value: string) => void)): TextInputNode
+        readonly(state: boolean): TextInputNode
+        singleLine(state: boolean): TextInputNode
+        maxLines(lines: number): TextInputNode
     }
 
     interface InterfaceBuilder {
@@ -183,6 +193,7 @@ declare module "interface-manager" {
         button(label: string, onClick: (() => void)): Node;
         slider(min: number, max: number, step: number, value: number, onChange: ((value: number) => void)): Node;
         list(label: string, items: string[], onClick: ((index: number) => void)): Node;
+        textInput(placeholder: string, value: string, onChange: ((value: string) => void)): TextInputNode;
     }
 
     function create(name: enumUi, callback: BuilderCallback): void;
