@@ -349,3 +349,47 @@ declare module "networking" {
     function execute(requestBuilder: RequestBuilder): Response;
     function newWebSocket(requestBuilder: RequestBuilder, listener: WebsocketListener): void;
 }
+
+declare module "events" {
+    interface Event {
+        canceled: boolean;
+    }
+
+    interface ConversationUpdateEvent extends Event {
+        readonly conversationId: string;
+        readonly conversation: any; // com.snapchat.client.messaging.Conversation
+        readonly messages: Message[];
+    }
+
+    interface BuildMessageEvent extends Event {
+        readonly message: Message;
+    }
+
+    interface BindViewEvent extends Event {
+        readonly model: any
+        readonly view: any; // android.view.View
+    }
+
+    interface OnSnapInteractionEvent extends Event {
+        readonly interactionType: any; // enum
+        readonly conversationId: string;
+        readonly messageId: number; // long
+    }
+
+    interface SendMessageWithContentEvent extends Event {
+        readonly destinations: MessageDestinations;
+        readonly messageContent: MessageContent;
+    }
+
+    interface AddViewEvent extends Event {
+        readonly parent: any; // android.view.ViewGroup
+        view: any; // android.view.View
+    }
+
+    function onConversationUpdated(callback: (event: ConversationUpdateEvent) => void): void;
+    function onMessageBuild(callback: (event: BuildMessageEvent) => void): void;
+    function onViewBind(callback: (event: BindViewEvent) => void): void;
+    function onSnapInteraction(callback: (event: OnSnapInteractionEvent) => void): void;
+    function onPreMessageSend(callback: (event: SendMessageWithContentEvent) => void): void;
+    function onAddView(callback: (event: AddViewEvent) => void): void;
+}
