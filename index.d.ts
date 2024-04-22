@@ -54,6 +54,8 @@ declare function findClass(className: string, useModClassLoader?: boolean): Clas
 declare function setField(instance: any, fieldName: string, value: any | undefined): void;
 declare function getField(instance: any, fieldName: string): any | undefined;
 
+declare function sleep(durationMs: number);
+
 declare module "hooker" {
     enum stage {
         BEFORE = "before",
