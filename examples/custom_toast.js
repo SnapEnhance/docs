@@ -3,7 +3,7 @@
 // displayName: Custom Toast
 // description: A Script that shows a custom toast message on launching Snapchat.
 // version: 1.0
-// author: Gabe Modz & Jacob Thomas 
+// author: Jimothy & Jacob Thomas 
 // ==/SE_module==
 
 var networking = require("networking");
