@@ -1,7 +1,7 @@
 # Scripting Documentation
 Hello! Here is the long awaited Documentation for the Scripting Engine.<br> 
 Contributions and improvements to this Documentation are gladly accepted via PRs. <br>
-In case of any questions, feel free to ask via opening an issue or asking on our Telegram Discussions Chat.
+In case of any questions, feel free to ask via opening an issue.
 
 ## Script Header
 
