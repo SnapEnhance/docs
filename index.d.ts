@@ -3,7 +3,7 @@ interface Class<T> {
 }
 
 interface JavaType {
-    newInstance(...args: any[]): any;
+    __new__(...args: any[]): any;
 }
 
 interface SEWrapper {
