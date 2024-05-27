@@ -15,6 +15,18 @@ interface SEWrapper {
     setEnumValue(fieldName: string, value: any /* java.lang.Enum */): void;
 }
 
+interface JSConsole {
+    log(...data: any): void;
+    warn(...data: any): void;
+    error(...data: any): void;
+    debug(...data: any): void;
+    info(...data: any): void;
+    trace(...data: any): void;
+    verbose(...data: any): void;
+}
+
+declare const console: JSConsole;
+
 declare const currentSide: "core" | "manager";
 
 declare namespace module {
