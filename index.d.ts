@@ -325,7 +325,7 @@ declare module "networking" {
         url(url: string): RequestBuilder;
         addHeader(name: string, value: string): RequestBuilder;
         removeHeader(name: string): RequestBuilder;
-        method(method: "post" | "get" | "put" | "delete" | "patch", body: string | any): RequestBuilder; // byte[] | java.io.InputStream
+        method(method: "POST" | "GET" | "PUT" | "HEAD" | "DELETE" | "PATCH", body: string | any | undefined /* byte[] | java.io.InputStream | null */): RequestBuilder;
     }
 
     interface Response {
