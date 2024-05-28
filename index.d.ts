@@ -3,6 +3,8 @@ interface Class<T> {
 }
 
 interface JavaType {
+    /** @deprecated */
+    newInstance(...args: any[]): any;
     __new__(...args: any[]): any;
 }
 
