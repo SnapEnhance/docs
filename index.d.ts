@@ -409,3 +409,107 @@ declare module "events" {
     function onPreMessageSend(callback: (event: SendMessageWithContentEvent) => void): void;
     function onAddView(callback: (event: AddViewEvent) => void): void;
 }
+
+
+declare module "protobuf" {
+    interface Wire {
+        getId(): number;
+        getType(): any;
+        getValue(): any;
+
+        toReader(): ProtoReader
+    }
+
+    interface ProtoReader {
+        getBuffer(): any; // byte[]
+
+        followPath(ids: number[], excludeLast: boolean, reader: (reader: ProtoReader) => void): ProtoReader | null;
+        containsPath(ids: number[]): boolean;
+        
+        forEach(block: (index: number, wire: Wire) => void): void;
+        forEach(ids: number[], reader: (reader: ProtoReader) => void): void;
+
+        eachBuffer(ids: number[], reader: (reader: ProtoReader) => void): void;
+        eachBuffer(block: (index: number, byteArray: any) => void): void;
+        contains(id: number): boolean;
+
+        getWire(id: number): Wire | null;
+        getRawValue(id: number): any;
+        
+        getByteArray(id: number): any;
+        getByteArray(ids: number[]): any;
+        
+        getString(id: number): string;
+        getString(ids: number[]): string;
+        
+        getVarInt(id: number): number;
+        getVarInt(ids: number[]): number;
+
+        getCount(id: number): number;
+
+        getFixed64(id: number): number;
+        getFixed64(ids: number[]): number;
+        getFixed32(id: number): number;
+    }
+
+    interface ProtoWriter {
+        addBuffer(id: number, byteArray: any): void;
+        addVarInt(id: number, value: number): void;
+        addString(id: number, value: string): void;
+        addFixed32(id: number, value: number): void;
+        addFixed64(id: number, value: number): void;
+
+        from(id: number, block: (writer: ProtoWriter) => void): void;
+        from(ids: number[], block: (writer: ProtoWriter) => void): void;
+
+        addWire(wire: Wire): void;
+
+        toByteArray(): any; // byte[]
+    }
+
+    interface EditorContext {
+        clear(): void;
+        
+        addWire(wire: Wire): void;
+        addVarInt(id: number, value: number): void;
+        addBuffer(id: number, byteArray: any): void;
+        add(id: number, block: (writer: ProtoWriter) => void): void;
+        addString(id: number, value: string): void;
+        addFixed64(id: number, value: number): void;
+        addFixed32(id: number, value: number): void;
+        
+        firstOrNull(id: number): Wire | null;
+        getOrNull(id: number): Wire[] | null;
+        get(id: number): Wire[];
+        remove(id: number): void;
+        remove(id: number, index: number): void;
+
+        edit(id: number, block: (context: EditorContext) => void): void;
+        editEach(id: number, block: (context: EditorContext) => void): void;
+    }
+
+    interface ProtoEditor {
+        edit(ids: number[], block: (context: EditorContext) => void): void;
+
+        toByteArray(): any; // byte[]
+    }
+
+    interface GrpcWriter {
+        addHeader(key: string, value: string): void;
+        toByteArray(): any; // byte[]
+    }
+
+    interface GrpcReader {
+        getHeaders(): Record<string, string>;
+        getMessages(): ProtoReader[];
+
+        read(block: (reader: ProtoReader) => void): void;
+    }
+
+    function reader(data: any/* byte[] | java.io.InputStream | String */): ProtoReader; 
+    function writer(): ProtoWriter;
+    function editor(data: any/* byte[] | java.io.InputStream | String */): ProtoEditor;
+
+    function grpcWriter(...data: any[]/* byte[] | java.io.InputStream | String */): GrpcWriter;
+    function grpcReader(data: any/* byte[] | java.io.InputStream | String */): GrpcReader;
+}
