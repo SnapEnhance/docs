@@ -27,7 +27,8 @@ Additionally, there are also optional fields available which are: `displayName`,
 `description`: Brief explanation of the script's functionality.<br>
 `minSnapchatVersion`: Minimum required Snapchat version code (e.g., 106822).<br>
 `minSEVersion`: Minimum required SnapEnhance version code (e.g., ).<br>
-`permissions`: Grant permissions to the script (e.g. unsafe-classloader)
+`permissions`: Grant permissions to the script (e.g. unsafe-classloader)<br>
+`executionSides`: Set a custom execution side (e.g. core, manager)
 
 ## Examples
 To start off, you can find a couple of Example scripts written by us [here](https://github.com/SnapEnhance/docs/tree/main/examples).
